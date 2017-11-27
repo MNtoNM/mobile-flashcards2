@@ -4,34 +4,57 @@ import { AsyncStorage, View, Text, FlatList, TouchableOpacity } from 'react-nati
 import { List } from 'react-native-elements';
 import * as API from '../utils/api';
 import { green, white, gray, } from '../utils/colors';
+import initialDeck from '../utils/dummy_data';
 
 class Home extends React.Component {
   state = {
-    decks: null
+    decks: initialDeck
   }
-  
-  componentDidMount() {
-    API.storeInitialData()
-    .then(AsyncStorage.getItem('decks').then((decks) => this.setState({ decks })) )
+
+  componentWillMount() {
+    this.storeInitialData();
+
+    //.then(AsyncStorage.getItem('decks').then((decks) => this.setState({ decks })) )
     // API.deckTitlesQuantities();
   }
-  
-  renderDeckTitles({ item, index }) {
-    return <Text>{item}</Text>;
+
+  storeInitialData () {
+    //alert('after set: ' + JSON.stringify(initialDeck));
+    if (!AsyncStorage.getItem('MobileFlashcards:decks')) {
+      try {
+        AsyncStorage.setItem('MobileFlashcards:decks', JSON.stringify(initialDeck))
+      } catch (error) {
+        alert(error)
+      }
+    }
   }
-  
+
   render() {
+    let cards = [];
+    let decks = this.state.decks;
+
+    for (let d in decks) {
+      cards.push(
+        <TouchableOpacity
+          onPress={() => this.props.navigation.navigate(
+            'SingleDeck',
+            { deckId : d}
+          )}
+          style={styles.listGroupItem} key={d}>
+          <Text style={styles.deckTitle}>{d}</Text>
+          <Text style={styles.deckSubtitle}>{decks[d].questions.length} Cards</Text>
+        </TouchableOpacity>
+      );
+    }
+
     return (
       <View>
         <Text style={{ alignSelf: 'center' }}>Select a deck below:</Text>
-        <TouchableOpacity onPress={() => this.props.navigation.navigate('SingleDeck')}>
-          <View style={styles.listGroupItem}>
-            <Text style={styles.deckTitle}>Dummy Deck</Text>
-            <Text style={styles.deckSubtitle}>420 Cards</Text>
-          </View>
-        </TouchableOpacity>
-      
-      <Text>{JSON.stringify(this.state.decks)}</Text>
+        <View>
+          { cards }
+        </View>
+
+
 
         <TouchableOpacity style={styles.addDeckBtn} onPress={() => this.props.navigation.navigate('AddDeck')}>
           <Text style={styles.addDeckText}>Add Deck</Text>
@@ -90,4 +113,3 @@ const styles = StyleSheet.create({
     paddingTop: 40,
   },
 })
-

@@ -4,8 +4,10 @@ import { white, green, black } from '../utils/colors';
 
 class AddQuestion extends Component {
   render() {
+    const currentDeck = this.props.navigation.state.params.deckId
     return (
-      <View style={{ marginTop: 100 }}>    
+      <View style={[ styles.container, { marginTop: 100 }]}>
+      <Text style={{ fontSize: 20, alignSelf: 'center' }}>Add new card to {currentDeck} deck:</Text>
         <TextInput
           style={styles.formControl}
           placeholder="Enter new question.."
@@ -21,7 +23,7 @@ class AddQuestion extends Component {
             <Text style={styles.buttonText}>Create Card</Text>
           </View>
         </TouchableOpacity>
-        
+
       </View>
     )
   }
@@ -48,12 +50,11 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: 300,
     marginTop: 20,
+  },
+  container: {
+    width: 300,
+    alignSelf: 'center',
   }
 })
 
 export default AddQuestion;
-
-
-
-
-

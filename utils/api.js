@@ -5,21 +5,22 @@ import { AsyncStorage } from 'react-native'
 // ______________
 
 // IF ASYNCSTORAGE KEY IS EMPTY, LOAD INITIAL "DUMMY" DATA INTO IT
- 
-export const storeInitialData = async () =>  {
-  if (!AsyncStorage.getItem('decks')) {
+
+export const storeInitialData = () =>  {
+  alert('after set: ' + JSON.stringify(initialDeck));
+  if (!AsyncStorage.getItem('MobileFlashcards:decks')) {
     try {
-      await AsyncStorage.setItem('decks', JSON.stringify(initialDeck))
+      AsyncStorage.setItem('MobileFlashcards:decks', JSON.stringify(initialDeck))
     } catch (error) {
       alert(error)
-    } 
+    }
   }
 }
 
 // TODO CREATE A METHOD THAT RETURNS AN ARRAY OF OBJECTS, CONSISTING OF DECK TITLE AND NUMBER OF CARDS.
   // export const deckTitlesQuantities = async () => {
   //   try {
-  //     await AsyncStorage.getItem('decks')
+  //     await AsyncStorage.getItem('MobileFlashcards:decks')
   //     .then()
   //   } catch (error) {
   //     alert(error)
@@ -31,4 +32,3 @@ export const storeInitialData = async () =>  {
 // TODO CREATE A METHOD THAT TAKES A TITLE, AND ADDS AN EMPTY DECK ON TO THE OBJECT WITH THE SAME KEYNAME.
 
 // TODO CREATE A METHOD THAT ACCEPTS A question, ANSWER AND DECK, AND ADDS THAT question TO THE RIGHT DECK.
-

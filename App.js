@@ -5,6 +5,7 @@ import { List, ListItem } from 'react-native-elements';
 import * as API from './utils/api';
 import initialDeck from './utils/dummy_data';
 import { AsyncStorage } from 'react-native'
+import { setLocalNotification } from './utils/helpers';
 // import { storeInitialData } from './utils/api';
 
 import Home from './components/Home';
@@ -14,6 +15,9 @@ import SingleDeck from './components/SingleDeck';
 import Quiz from './components/Quiz';
 
 export class App extends React.Component {
+  componentDidMount() {
+  setLocalNotification()
+  }
   render() {
     return (
       <Stack />
