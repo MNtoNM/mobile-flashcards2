@@ -49,11 +49,11 @@ class Home extends React.Component {
         <TouchableOpacity
           onPress={() => this.props.navigation.navigate(
             'SingleDeck',
-            { deckId : d}
+            { deckId : d.id}
           )}
-          style={styles.listGroupItem} key={d}>
-          <Text style={styles.deckTitle}>{d}</Text>
-          <Text style={styles.deckSubtitle}>{decks[d].questions.length} Cards</Text>
+          style={styles.listGroupItem} key={d.id}>
+          <Text style={styles.deckTitle}>{d.title}</Text>
+          
         </TouchableOpacity>
       );
     }

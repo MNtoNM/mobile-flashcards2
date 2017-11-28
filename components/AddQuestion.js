@@ -5,9 +5,23 @@ import { white, green, black } from '../utils/colors';
 class AddQuestion extends Component {
 
   state = {
-    currentDeck: this.props.navigation.state.params.deckId,
+    idDeck: this.props.navigation.state.params.deckId,
     question: "",
-    answer: ''
+    answer: '',
+    currentDeck:null
+  }
+
+  async componentDidMount() {
+    const actualDecks = await AsyncStorage.getItem('MobileFlashcards:decks');
+    console.log(this.state.idDeck);
+    const idDeck = this.state.idDeck
+    const parseDecks = JSON.parse(actualDecks);
+    const findedDeck = parseDecks.find(item =>{
+      return item.id === idDeck
+    });
+    this.setState({ currentDeck: findedDeck});
+    console.log(`length questions ${this.state.currentDeck.questions.length}`);
+    //console.log(parseDecks);
   }
 
   fetchExistingQuestions = async () => {
@@ -21,20 +35,27 @@ class AddQuestion extends Component {
     .then(results => console.log("Questions --> ", results))
   }
 
-  addNewQuestion = async () => {
-    const old = this.fetchExistingQuestions();
-    const newData = {
-      [this.state.currentDeck]: {
-        'questions': [
-          old,
-          {
-            'question': this.state.question,
-            'answer': this.state.answer,
-          }
-        ],
-      }
-    }
-    const objString = JSON.stringify(newData)
+  addNewQuestion() {
+
+
+    //this.fetchExistingQuestions();
+    const newCard = {
+      'question': this.state.question,
+      'answer': this.state.answer,
+    };
+    const modifiedDeck = this.state.currentDeck.questions.push(newCard);
+        // const newData = {
+    //   [this.state.currentDeck]: {
+    //     'questions': [
+    //       old,
+    //       {
+    //         'question': this.state.question,
+    //         'answer': this.state.answer,
+    //       }
+    //     ],
+    //   }
+    // }
+    const objString = JSON.stringify(modifiedDeck)
     AsyncStorage.mergeItem('MobileFlashcards:decks', objString)
     this.props.navigation.navigate('Home')
   }
