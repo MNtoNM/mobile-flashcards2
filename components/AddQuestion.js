@@ -12,15 +12,17 @@ class AddQuestion extends Component {
 
   fetchExistingQuestions = async () => {
     await AsyncStorage.getItem('MobileFlashcards:decks')
-    .then(results => JSON.parse(results))
+    .then(results => console.log("FROM ASYNC --> ", results))
+    // .then(results => JSON.parse(results))
+    // .then(results => console.log("PARSED --> ", results))
     .then(results => results[this.state.currentDeck])
+    .then(results => console.log("Current Deck --> ", results))
     .then(results => results.questions)
-    .then(results => console.log("Q ARRAY", results))
+    .then(results => console.log("Questions --> ", results))
   }
 
   addNewQuestion = async () => {
     const old = this.fetchExistingQuestions();
-    console.log("OLD: ", old)
     const newData = {
       [this.state.currentDeck]: {
         'questions': [

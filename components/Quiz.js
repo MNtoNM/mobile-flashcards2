@@ -9,7 +9,15 @@ class Quiz extends Component {
     questionNum: null
   }
 
-  componentDidMount() {
+  zeroOut() {
+    try {
+      AsyncStorage.setItem('MobileFlashcards:score', '0')
+    } catch (error) {
+    alert(error)
+    }
+  }
+
+  next(score) {
 
   }
 
