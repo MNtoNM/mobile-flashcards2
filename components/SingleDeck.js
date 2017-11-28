@@ -19,16 +19,8 @@ class SingleDeck extends Component {
     .then(questions => this.setState({ questions }))
   }
 
-  // calcQuestionLength() {
-  //   let count = 0;
-  //   for (n in this.state.questions) if (this.state.questions.hasOwnProperty(n)) count++;
-  //   console.log("JS item: ", this.state.questions)
-  //   console.log("LENGTH --> : ", count)
-  //   return count;
-  // }
-
   render() {
-    const questions = this.state.questions.questions
+    const questions = this.state.questions
     return (
       <View>
         <Text style={styles.deckName}>{this.state.deckName}</Text>

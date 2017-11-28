@@ -1,20 +1,42 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, TextInput, AsyncStorage, Button } from 'react-native';
 import { green, white, black } from '../utils/colors';
 
 class AddDeck extends Component {
-  render() { 
+
+  state = {
+    deckName: ""
+  }
+
+  addDeck = async() => {
+    const newDeck = {
+      [this.state.deckName]: {
+        'questions': [],
+        'title': this.state.deckName
+      }
+    }
+    const objString = JSON.stringify(newDeck)
+    AsyncStorage.mergeItem('MobileFlashcards:decks', objString)
+    this.props.navigation.navigate('Home')
+  }
+
+  render() {
     return (
       <View style={{ marginTop: 100 }}>
       <TextInput
         style={styles.formControl}
         placeholder="Enter new deck name..."
         placeholderTextColor={black}
+        value={this.state.deckName}
+        onChangeText={(deckName) => this.setState( {deckName} )}
       />
-        
-        <TouchableOpacity style={styles.addDeckBtn}>
-          <Text style={styles.addDeckText}>Create Deck</Text>
-        </TouchableOpacity>
+
+        <Button
+          title="Create Deck"
+          onPress={this.addDeck}
+          style={styles.addDeckBtn}>
+        </Button>
+
       </View>
     )
   }
@@ -45,8 +67,3 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   }
 })
-
-
-
-
-

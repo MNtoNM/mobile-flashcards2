@@ -8,24 +8,35 @@ import initialDeck from '../utils/dummy_data';
 
 class Home extends React.Component {
   state = {
-    decks: initialDeck
+    decks: null
   }
 
   componentWillMount() {
     this.storeInitialData();
+    // AsyncStorage.clear();
 
     //.then(AsyncStorage.getItem('decks').then((decks) => this.setState({ decks })) )
     // API.deckTitlesQuantities();
   }
 
-  storeInitialData () {
+
+
+
+  async storeInitialData () {
     //alert('after set: ' + JSON.stringify(initialDeck));
-    if (!AsyncStorage.getItem('MobileFlashcards:decks')) {
-      try {
-        AsyncStorage.setItem('MobileFlashcards:decks', JSON.stringify(initialDeck))
-      } catch (error) {
-        alert(error)
+    try {
+      const _decks = await AsyncStorage.getItem('MobileFlashcards:decks');
+      if (_decks) {
+        console.log(_decks);
+        this.setState({ decks: JSON.parse(_decks) });
+      } else {
+        AsyncStorage.setItem('MobileFlashcards:decks', JSON.stringify(initialDeck));
       }
+    }
+    catch (e) {
+
+    } finally {
+
     }
   }
 

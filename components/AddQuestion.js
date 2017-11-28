@@ -1,8 +1,42 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, StyleSheet, Button, AsyncStorage } from 'react-native';
 import { white, green, black } from '../utils/colors';
 
 class AddQuestion extends Component {
+
+  state = {
+    currentDeck: this.props.navigation.state.params.deckId,
+    question: "",
+    answer: ''
+  }
+
+  fetchExistingQuestions = async () => {
+    await AsyncStorage.getItem('MobileFlashcards:decks')
+    .then(results => JSON.parse(results))
+    .then(results => results[this.state.currentDeck])
+    .then(results => results.questions)
+    .then(results => console.log("Q ARRAY", results))
+  }
+
+  addNewQuestion = async () => {
+    const old = this.fetchExistingQuestions();
+    console.log("OLD: ", old)
+    const newData = {
+      [this.state.currentDeck]: {
+        'questions': [
+          old,
+          {
+            'question': this.state.question,
+            'answer': this.state.answer,
+          }
+        ],
+      }
+    }
+    const objString = JSON.stringify(newData)
+    AsyncStorage.mergeItem('MobileFlashcards:decks', objString)
+    this.props.navigation.navigate('Home')
+  }
+
   render() {
     const currentDeck = this.props.navigation.state.params.deckId
     return (
@@ -12,17 +46,21 @@ class AddQuestion extends Component {
           style={styles.formControl}
           placeholder="Enter new question.."
           placeholderTextColor={black}
+          onChangeText={(question) => this.setState({question})}
+
         />
         <TextInput
           style={styles.formControl}
           placeholder="Enter new answer.."
           placeholderTextColor={black}
+          onChangeText={(answer) => this.setState({answer})}
+
         />
-        <TouchableOpacity>
-          <View style={[styles.button, { backgroundColor: green }]}>
-            <Text style={styles.buttonText}>Create Card</Text>
-          </View>
-        </TouchableOpacity>
+        <Button
+          onPress={this.addNewQuestion}
+          style={styles.button}
+          title="Create Card">
+        </Button>
 
       </View>
     )
