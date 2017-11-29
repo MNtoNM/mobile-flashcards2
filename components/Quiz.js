@@ -1,24 +1,32 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, AsyncStorage } from 'react-native';
 import { gray, white, green, red } from '../utils/colors';
+import Question from './Question';
+import Answer from './Answer';
 
 class Quiz extends Component {
   state = {
     view: 'question',
-    score: null,
+    score: 0,
     questionNum: null
   }
 
   zeroOut() {
-    try {
-      AsyncStorage.setItem('MobileFlashcards:score', '0')
-    } catch (error) {
-    alert(error)
-    }
+
   }
 
-  next(score) {
+  next(points) {
+    this.setState((prevState) => ({
+      score: prevState.score + points
+    }))
+  }
 
+  toggleCardSide = () => {
+    if (this.state.view === 'answer') {
+      this.setState({ view: 'question' })
+    } else if (this.state.view === 'question') {
+      this.setState({ view: 'answer' })
+    }
   }
 
   render() {
@@ -27,26 +35,10 @@ class Quiz extends Component {
       case 'question':
         return (
           <View>
-            <View>
-              <Text>{deckName} Quiz</Text>
-              <Text style={styles.questionHeader}>QUESTION</Text>
-              <Text style={styles.questionBody}>Question Body Goes Here blah blah blah blah blah</Text>
-
-              <TouchableOpacity style={[styles.button, { 'backgroundColor': green }]}>
-                <Text style={styles.buttonText}>Correct</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity style={[styles.button, { 'backgroundColor': red }]}>
-                <Text style={styles.buttonText}>Incorrect</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                onPress={() => this.setState({ view: 'answer' })}
-                style={[styles.button, { 'backgroundColor': gray} ]}>
-                <Text style={styles.buttonText}>View Answer</Text>
-              </TouchableOpacity>
-            </View>
-
+            <Question
+              deckName={deckName}
+              toggleCardSide={this.toggleCardSide}
+            />
 
             <TouchableOpacity onPress={() => this.setState({ view: 'question' })}>
               <Text>Question View</Text>
@@ -57,44 +49,16 @@ class Quiz extends Component {
             <TouchableOpacity onPress={() => this.setState({ view: 'results' })}>
               <Text>Results View</Text>
             </TouchableOpacity>
+
 
           </View>
         )
       case 'answer':
         return (
-          <View>
-            <View>
-              <Text>{deckName} Quiz</Text>
-              <Text style={styles.questionHeader}>ANSWER</Text>
-              <Text style={styles.questionBody}>Answer Body Goes Here blah blah blah blah blah</Text>
-
-              <TouchableOpacity style={[styles.button, { 'backgroundColor': green }]}>
-                <Text style={styles.buttonText}>Correct</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity style={[styles.button, { 'backgroundColor': red }]}>
-                <Text style={styles.buttonText}>Incorrect</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                onPress={() => this.setState({ view: 'question' })}
-                style={[styles.button, { 'backgroundColor': gray} ]}>
-                <Text style={styles.buttonText}>View Question</Text>
-              </TouchableOpacity>
-            </View>
-
-
-            <TouchableOpacity onPress={() => this.setState({ view: 'question' })}>
-              <Text>Question View</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => this.setState({ view: 'answer' })}>
-              <Text>Answer View</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => this.setState({ view: 'results' })}>
-              <Text>Results View</Text>
-            </TouchableOpacity>
-
-          </View>
+          <Answer
+            deckName={deckName}
+            toggleCardSide={this.toggleCardSide.bind(this)}
+          />
         )
       case 'results':
         return (
@@ -105,7 +69,6 @@ class Quiz extends Component {
 
             <Text style={{ alignSelf: 'center' }}>You Got X out of Y, or </Text>
             <Text style={styles.score}>Z%</Text>
-
             <TouchableOpacity
               onPress={() => this.props.navigation.navigate('Home')}
               style={[styles.button, { backgroundColor: gray }]}>
@@ -117,18 +80,8 @@ class Quiz extends Component {
               <Text style={styles.buttonText}>Go Again</Text>
             </TouchableOpacity>
           </View>
-            <TouchableOpacity onPress={() => this.setState({ view: 'question' })}>
-              <Text>Question View</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => this.setState({ view: 'answer' })}>
-              <Text>Answer View</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => this.setState({ view: 'results' })}>
-              <Text>Results View</Text>
-            </TouchableOpacity>
-
-          </View>
-        )
+        </View>
+      )
     }
   }
 }
