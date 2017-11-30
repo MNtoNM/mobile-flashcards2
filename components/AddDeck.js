@@ -17,7 +17,10 @@ class AddDeck extends Component {
     }
     const objString = JSON.stringify(newDeck)
     AsyncStorage.mergeItem('MobileFlashcards:decks', objString)
-    this.props.navigation.navigate('Home')
+    this.props.navigation.navigate(
+      'SingleDeck',
+      { deckId: this.state.deckName}
+    )
   }
 
   render() {

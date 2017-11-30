@@ -13,7 +13,7 @@ class Home extends React.Component {
 
   componentWillMount() {
     this.storeInitialData();
-    // AsyncStorage.clear();
+    // AsyncStorage.removeItem('MobileFlashcards:decks');
 
     //.then(AsyncStorage.getItem('decks').then((decks) => this.setState({ decks })) )
     // API.deckTitlesQuantities();

@@ -13,10 +13,13 @@ import AddQuestion from './components/AddQuestion';
 import AddDeck from './components/AddDeck';
 import SingleDeck from './components/SingleDeck';
 import Quiz from './components/Quiz';
+import Question from './components/Question';
+import Answer from './components/Answer';
+import Result from  './components/Result';
 
 export class App extends React.Component {
   componentDidMount() {
-  setLocalNotification()
+    setLocalNotification()
   }
   render() {
     return (
@@ -44,6 +47,15 @@ export const Stack = StackNavigator({
     navigationOptions: {
       title: 'Quiz Yourself'
     }
+  },
+  Question: {
+    screen: Question,
+  },
+  Answer: {
+    screen: Answer,
+  },
+  Result: {
+    screen: Result,
   },
   AddDeck: {
     screen: AddDeck,

@@ -1,21 +1,24 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, StyleSheet} from 'react-native';
-import { red, green, gray, white } from '../utils/colors';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { white, gray, green, red } from '../utils/colors';
 
-const Answer = ({ deckName, toggleCard, questionsArray, currentQuestion, score }) => (
+const Question = ({ question, deckName, currentQuestion, questionsArray, score, next, toggleCard }) => (
   <View>
     <View>
       <Text>{deckName} Quiz</Text>
+
       <Text style={styles.questionHeader}>#{currentQuestion + 1}</Text>
       <Text style={{ 'alignSelf': 'center'}}>{questionsArray.length - currentQuestion} Remaining</Text>
       <Text style={{ 'alignSelf': 'center'}}>Correct so far: {score} </Text>
 
+      <Text style={styles.questionHeader}>QUESTION</Text>
 
-      <Text style={styles.questionHeader}>ANSWER</Text>
-      <Text style={styles.questionBody}>{questionsArray[currentQuestion].answer}</Text>
+      <Text style={styles.questionBody}>{console.log("YO! -->", questionsArray[currentQuestion].question)}</Text>
 
 
-      <TouchableOpacity style={[styles.button, { 'backgroundColor': green }]}>
+      <TouchableOpacity
+        onPress={() => next(1)}
+        style={[styles.button, { 'backgroundColor': green }]}>
         <Text style={styles.buttonText}>Correct</Text>
       </TouchableOpacity>
 
@@ -25,14 +28,20 @@ const Answer = ({ deckName, toggleCard, questionsArray, currentQuestion, score }
 
       <TouchableOpacity
         onPress={toggleCard}
-        style={[styles.button, { 'backgroundColor': gray} ]}>
-        <Text style={styles.buttonText}>View Question</Text>
+        style={[styles.button, { 'backgroundColor': gray } ]}
+      >
+        <Text style={styles.buttonText}>View Answer</Text>
       </TouchableOpacity>
     </View>
   </View>
 )
 
 const styles = StyleSheet.create({
+  buttonText: {
+    fontSize: 30,
+    color: white,
+    fontWeight: 'bold',
+  },
   button: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -43,11 +52,6 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     marginTop: 20,
     width: 250,
-  },
-  buttonText: {
-    fontSize: 30,
-    color: white,
-    fontWeight: 'bold'
   },
   questionHeader: {
     alignSelf: 'center',
@@ -62,4 +66,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Answer;
+export default Question;

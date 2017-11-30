@@ -1,13 +1,19 @@
 import React from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
-import { white, gray, green, red } from '../utils/colors';
+import { Text, View, TouchableOpacity, StyleSheet} from 'react-native';
+import { red, green, gray, white } from '../utils/colors';
 
-const Question = ({ question, deckName, toggleCardSide }) => (
+const Answer = ({ deckName, toggleCard, questionsArray, currentQuestion, score }) => (
   <View>
     <View>
       <Text>{deckName} Quiz</Text>
+      <Text style={styles.questionHeader}>#{currentQuestion + 1}</Text>
+      <Text style={{ 'alignSelf': 'center'}}>{questionsArray.length - currentQuestion} Remaining</Text>
+      <Text style={{ 'alignSelf': 'center'}}>Correct so far: {score} </Text>
+
+
       <Text style={styles.questionHeader}>QUESTION</Text>
-      <Text style={styles.questionBody}>Question Body Goes Here blah blah blah blah blah</Text>
+      <Text style={styles.questionBody}>{JSON.stringify(questionsArray[currentQuestion])}</Text>
+
 
       <TouchableOpacity style={[styles.button, { 'backgroundColor': green }]}>
         <Text style={styles.buttonText}>Correct</Text>
@@ -18,15 +24,13 @@ const Question = ({ question, deckName, toggleCardSide }) => (
       </TouchableOpacity>
 
       <TouchableOpacity
-        onPress={this.props.toggleCardSide}
+        onPress={toggleCard}
         style={[styles.button, { 'backgroundColor': gray} ]}>
         <Text style={styles.buttonText}>View Answer</Text>
       </TouchableOpacity>
     </View>
-
-
   </View>
-);
+)
 
 const styles = StyleSheet.create({
   button: {
@@ -54,9 +58,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     alignSelf: 'center',
     width: 300,
-    marginBottom: 100,
+    marginBottom: 20,
   }
 })
 
-
-export default Question;
+export default Answer;

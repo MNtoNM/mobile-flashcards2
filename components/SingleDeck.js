@@ -20,11 +20,16 @@ class SingleDeck extends Component {
   }
 
   render() {
-    const questions = this.state.questions
+    const questions = this.state.questions.questions
+      if(questions) {
+        var length = questions.length
+      } else {
+        var length = 0
+      }
     return (
       <View>
         <Text style={styles.deckName}>{this.state.deckName}</Text>
-        <Text style={styles.numQuestions}>Questions: {JSON.stringify(questions)} </Text>
+        <Text style={styles.numQuestions}>Questions: {length} </Text>
 
         <TouchableOpacity
           onPress={() => this.props.navigation.navigate(

@@ -3,30 +3,59 @@ import { View, Text, TouchableOpacity, StyleSheet, AsyncStorage } from 'react-na
 import { gray, white, green, red } from '../utils/colors';
 import Question from './Question';
 import Answer from './Answer';
+import Result from './Result';
 
 class Quiz extends Component {
   state = {
     view: 'question',
     score: 0,
-    questionNum: null
+    currentQuestion: 0,
+    questionsArray: []
   }
 
-  zeroOut() {
+componentDidMount() {
+  const deckName = this.props.navigation.state.params.deckId
+  try {
+    AsyncStorage.getItem('MobileFlashcards:decks')
+    .then(results => JSON.parse(results))
+    // .then(results => console.log(results))
+    .then(results => results[deckName])
+    .then(results =>  results.questions)
+    // .then(results => console.log("q's array b4 setstate --> ", results))
+    .then(results => this.setState({ questionsArray: results}))
+    .then(results => console.log("QUESTIONS FROM STATE --> ", this.state.questionsArray ))
+  } catch (error) {
+    console.log(error)
+  }
+  // const decksObject = JSON.parse(decksString)
+  // console.log("parsedDecks --> ", decksObject)
+  }
 
+  componentWillUnmount() {
+    this.setState({ currentQuestion: 0, score: 0 })
   }
 
   next(points) {
     this.setState((prevState) => ({
-      score: prevState.score + points
+      score: prevState.score + points,
+    }))
+    this.setState((prevState) => ({
+      currentQuestion: prevState.currentQuestion + 1
     }))
   }
 
-  toggleCardSide = () => {
+  toggleCard = () => {
     if (this.state.view === 'answer') {
       this.setState({ view: 'question' })
     } else if (this.state.view === 'question') {
       this.setState({ view: 'answer' })
     }
+  }
+
+  calculateScore = () => { // round this to one decimal
+    return (
+      (this.state.score / this.state.questionsArray.length)
+    )
   }
 
   render() {
@@ -37,50 +66,37 @@ class Quiz extends Component {
           <View>
             <Question
               deckName={deckName}
-              toggleCardSide={this.toggleCardSide}
+              toggleCard={this.toggleCard}
+              questionsArray={this.state.questionsArray}
+              currentQuestion={this.state.currentQuestion}
+              score={this.state.score}
+              next={this.next}
             />
 
-            <TouchableOpacity onPress={() => this.setState({ view: 'question' })}>
-              <Text>Question View</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => this.setState({ view: 'answer' })}>
-              <Text>Answer View</Text>
-            </TouchableOpacity>
             <TouchableOpacity onPress={() => this.setState({ view: 'results' })}>
               <Text>Results View</Text>
             </TouchableOpacity>
-
-
           </View>
         )
       case 'answer':
         return (
           <Answer
             deckName={deckName}
-            toggleCardSide={this.toggleCardSide.bind(this)}
+            toggleCard={this.toggleCard}
+            questionsArray={this.state.questionsArray}
+            currentQuestion={this.state.currentQuestion}
+            score={this.state.score}
+            next={this.next}
           />
         )
       case 'results':
         return (
-          <View>
-          <View>
-            <Text>{deckName} Quiz</Text>
-            <Text style={styles.header}>YOUR SCORE:</Text>
-
-            <Text style={{ alignSelf: 'center' }}>You Got X out of Y, or </Text>
-            <Text style={styles.score}>Z%</Text>
-            <TouchableOpacity
-              onPress={() => this.props.navigation.navigate('Home')}
-              style={[styles.button, { backgroundColor: gray }]}>
-              <Text style={styles.buttonText}>See All Decks</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => this.setState({ view: 'question'}) }
-              style={[styles.button, { backgroundColor: green }]}>
-              <Text style={styles.buttonText}>Go Again</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+          <Result
+            calculateScore={this.calculateScore}
+            deckName={deckName}
+            score={this.state.score}
+            questionsArray={this.state.questionsArray}
+          />
       )
     }
   }
