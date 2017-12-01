@@ -2,7 +2,8 @@ import React from 'react';
 import { Text, View, TouchableOpacity, StyleSheet} from 'react-native';
 import { red, green, gray, white } from '../utils/colors';
 
-const Answer = ({ deckName, toggleCard, questionsArray, currentQuestion, score }) => (
+const Question = ({ deckName, toggleCard, questionsArray, currentQuestion, score }) => {
+  return (
   <View>
     <View>
       <Text>{deckName} Quiz</Text>
@@ -12,7 +13,7 @@ const Answer = ({ deckName, toggleCard, questionsArray, currentQuestion, score }
 
 
       <Text style={styles.questionHeader}>QUESTION</Text>
-      <Text style={styles.questionBody}>{JSON.stringify(questionsArray[currentQuestion])}</Text>
+      <Text style={styles.questionBody}>{ (questionsArray[currentQuestion]) ? questionsArray[currentQuestion].question : null}</Text>
 
 
       <TouchableOpacity style={[styles.button, { 'backgroundColor': green }]}>
@@ -31,6 +32,7 @@ const Answer = ({ deckName, toggleCard, questionsArray, currentQuestion, score }
     </View>
   </View>
 )
+}
 
 const styles = StyleSheet.create({
   button: {
@@ -62,4 +64,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Answer;
+export default Question;

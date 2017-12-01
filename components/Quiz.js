@@ -60,9 +60,12 @@ componentDidMount() {
 
   render() {
     const deckName = this.props.navigation.state.params.deckId
+
     switch(this.state.view) {
       case 'question':
         return (
+
+          (this.state.questionsArray) ?
           <View>
             <Question
               deckName={deckName}
@@ -76,7 +79,7 @@ componentDidMount() {
             <TouchableOpacity onPress={() => this.setState({ view: 'results' })}>
               <Text>Results View</Text>
             </TouchableOpacity>
-          </View>
+          </View> : null
         )
       case 'answer':
         return (
@@ -96,6 +99,7 @@ componentDidMount() {
             deckName={deckName}
             score={this.state.score}
             questionsArray={this.state.questionsArray}
+            navigation={this.props.navigation}
           />
       )
     }
