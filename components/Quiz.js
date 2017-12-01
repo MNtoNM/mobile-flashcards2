@@ -35,13 +35,20 @@ componentDidMount() {
     this.setState({ currentQuestion: 0, score: 0 })
   }
 
-  next(points) {
-    this.setState((prevState) => ({
-      score: prevState.score + points,
-    }))
-    this.setState((prevState) => ({
-      currentQuestion: prevState.currentQuestion + 1
-    }))
+  nextQuestion = (points) => {
+    // console.log(`Curr ?: ${this.state.currentQuestion}, length: ${this.state.questionsArray.length-1} ` )
+
+    if (this.state.currentQuestion+1 < this.state.questionsArray.length) {
+      this.setState((prevState) => ({
+        score: prevState.score + points,
+        currentQuestion: prevState.currentQuestion + 1
+      }))
+    } else {
+      this.setState((prevState) => ({
+        score: prevState.score + points
+      }))
+      this.setState({ view: 'results'})
+    }
   }
 
   toggleCard = () => {
@@ -54,7 +61,7 @@ componentDidMount() {
 
   calculateScore = () => { // round this to one decimal
     return (
-      (this.state.score / this.state.questionsArray.length)
+      Math.round((this.state.score / this.state.questionsArray.length) * 100)
     )
   }
 
@@ -73,7 +80,7 @@ componentDidMount() {
               questionsArray={this.state.questionsArray}
               currentQuestion={this.state.currentQuestion}
               score={this.state.score}
-              next={this.next}
+              nextQuestion={this.nextQuestion}
             />
 
             <TouchableOpacity onPress={() => this.setState({ view: 'results' })}>
@@ -89,7 +96,7 @@ componentDidMount() {
             questionsArray={this.state.questionsArray}
             currentQuestion={this.state.currentQuestion}
             score={this.state.score}
-            next={this.next}
+            nextQuestion={this.nextQuestion}
           />
         )
       case 'results':
@@ -100,6 +107,7 @@ componentDidMount() {
             score={this.state.score}
             questionsArray={this.state.questionsArray}
             navigation={this.props.navigation}
+            next={this.next}
           />
       )
     }

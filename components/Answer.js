@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View, TouchableOpacity, StyleSheet} from 'react-native';
 import { red, green, gray, white } from '../utils/colors';
 
-const Answer = ({ deckName, toggleCard, questionsArray, currentQuestion, score }) => (
+const Answer = ({ deckName, toggleCard, questionsArray, currentQuestion, score, nextQuestion }) => (
   <View>
     <View>
       <Text>{deckName} Quiz</Text>
@@ -15,11 +15,15 @@ const Answer = ({ deckName, toggleCard, questionsArray, currentQuestion, score }
       <Text style={styles.questionBody}>{questionsArray[currentQuestion].answer}</Text>
 
 
-      <TouchableOpacity style={[styles.button, { 'backgroundColor': green }]}>
+      <TouchableOpacity
+        onPress={() => nextQuestion(1)}
+        style={[styles.button, { 'backgroundColor': green }]}>
         <Text style={styles.buttonText}>Correct</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={[styles.button, { 'backgroundColor': red }]}>
+      <TouchableOpacity
+        onPress={() => nextQuestion(0)}
+        style={[styles.button, { 'backgroundColor': red }]}>
         <Text style={styles.buttonText}>Incorrect</Text>
       </TouchableOpacity>
 
