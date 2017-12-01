@@ -6,7 +6,6 @@ import * as API from './utils/api';
 import initialDeck from './utils/dummy_data';
 import { AsyncStorage } from 'react-native'
 import { setLocalNotification } from './utils/helpers';
-// import { storeInitialData } from './utils/api';
 
 import Home from './components/Home';
 import AddQuestion from './components/AddQuestion';

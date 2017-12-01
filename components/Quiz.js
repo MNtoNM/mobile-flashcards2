@@ -27,8 +27,7 @@ componentDidMount() {
   } catch (error) {
     console.log(error)
   }
-  // const decksObject = JSON.parse(decksString)
-  // console.log("parsedDecks --> ", decksObject)
+
   }
 
   componentWillUnmount() {
@@ -36,7 +35,6 @@ componentDidMount() {
   }
 
   nextQuestion = (points) => {
-    // console.log(`Curr ?: ${this.state.currentQuestion}, length: ${this.state.questionsArray.length-1} ` )
 
     if (this.state.currentQuestion+1 < this.state.questionsArray.length) {
       this.setState((prevState) => ({
@@ -83,9 +81,6 @@ componentDidMount() {
               nextQuestion={this.nextQuestion}
             />
 
-            <TouchableOpacity onPress={() => this.setState({ view: 'results' })}>
-              <Text>Results View</Text>
-            </TouchableOpacity>
           </View> : null
         )
       case 'answer':
