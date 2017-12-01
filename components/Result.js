@@ -6,7 +6,7 @@ import { clearLocalNotification, setLocalNotification } from '../utils/helpers';
 class Result extends Component {
   componentDidMount() {
     clearLocalNotification()
-      .then(setLocalNotification())
+      .then(setLocalNotification)
   }
 
   render() {
